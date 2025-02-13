@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPS-Lens</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        let reportLinks = {}; // Store report links by store and report name
+
+        async function loadReports() {
+            const response = await fetch('google_drive_links.csv'); // Adjust path if needed
+            const text = await response.text();
+            const rows = text.split('\n').slice(1);
+            let stores = new Set();
+            
+            rows.forEach(row => {
+                const columns = row.split(',').map(col => col.trim()); // Trim spaces
+                if (columns.length >= 3) {
+                    const store = columns[0];
+                    const reportName = columns[1];
+                    const reportLink = columns[2];
+                    
+                    stores.add(store);
+                    if (!reportLinks[store]) reportLinks[store] = {};
+                    reportLinks[store][reportName] = reportLink; // Store exact matches
+                }
+            });
+            
+            // Populate store dropdown
+            const storeDropdown = document.getElementById("store");
+            ["SPRINGBOK SUPERSPAR", "SPRINGBOK TOPS", "VREDENDAL SUPERSPAR", "VREDENDAL TOPS", "PORT NOLLOTH SPAR", "PORT NOLLOTH TOPS", "BERGSIG SAVEMOR"].forEach(store => {
+                let option = document.createElement("option");
+                option.value = store;
+                option.textContent = store;
+                storeDropdown.appendChild(option);
+            });
+        }
+        
+        function openReport(reportName) {
+            const selectedStore = document.getElementById("store").value;
+            
+            if (selectedStore && reportLinks[selectedStore] && reportLinks[selectedStore][reportName]) {
+                window.open(reportLinks[selectedStore][reportName], '_blank');
+            } else {
+                alert("Report not found. Please select a store first and ensure the report exists.");
+            }
+        }
+
+        window.onload = function() {
+            loadReports();
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-GB');
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <h1>OPS-Lens</h1>
+        <div class="date-container">
+            <p id="current-date"></p>
+        </div>
+        <div class="dropdowns">
+            <label for="store">Store:</label>
+            <select id="store">
+                <option value="">Select Store</option>
+            </select>
+        </div>
+    </header>
+    <main>
+        <div class="report-buttons">
+            <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSdfHBzPa6vhWWhKWZwFusceHaQZWMAe2cr6Y_EtTNJcIWbMmA/viewform', '_blank')">Submit Corrective Action</button>
+            <button onclick="openReport('Negative Stock Report')">Negative Stock</button>
+            <button onclick="openReport('Negative GP Report')">Negative GP</button>
+            <button onclick="openReport('SOH, No Sale > 2 Weeks')">SOH, No Sale > 2 Weeks</button>
+            <button onclick="openReport('No Stocktake > 3 Months')">No Stocktake > 3 Months</button>
+            <button onclick="openReport('Over/Under Stock')">Over/Under Stock</button>
+            <button onclick="openReport('Dog Lines')">Dog Lines</button>
+            <button onclick="openReport('Parent & Child')">Parent & Child</button>
+            <button onclick="openReport('Seasonal Lines')">Seasonal Lines</button>
+            <button onclick="openReport('Supplier Not Used > 3 Months')">Supplier Not Used > 3 Months</button>
+
+        </div>
+    </main>
+    <footer>
+        <img src="/static/BURFAM LOGO.png" alt="BURFAM Logo">
+    </footer>
+</body>
+</html>
