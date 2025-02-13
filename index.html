@@ -9,7 +9,7 @@
         let reportLinks = {}; // Store report links by store and report name
 
         async function loadReports() {
-            const response = await fetch('google_drive_links.csv'); // Adjust path if needed
+            const response = await fetch('https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/ops-lens-reports/main/google_drive_links.csv'); // Adjust path if needed
             const text = await response.text();
             const rows = text.split('\n').slice(1);
             let stores = new Set();
