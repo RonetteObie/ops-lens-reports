@@ -9,32 +9,36 @@
         let reportLinks = {}; // Store report links by store and report name
 
         async function loadReports() {
-            const response = await fetch('https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/ops-lens-reports/main/google_drive_links.csv'); // Adjust path if needed
-            const text = await response.text();
-            const rows = text.split('\n').slice(1);
-            let stores = new Set();
-            
-            rows.forEach(row => {
-                const columns = row.split(',').map(col => col.trim()); // Trim spaces
-                if (columns.length >= 3) {
-                    const store = columns[0];
-                    const reportName = columns[1];
-                    const reportLink = columns[2];
-                    
-                    stores.add(store);
-                    if (!reportLinks[store]) reportLinks[store] = {};
-                    reportLinks[store][reportName] = reportLink; // Store exact matches
-                }
-            });
-            
-            // Populate store dropdown
-            const storeDropdown = document.getElementById("store");
-            ["SPRINGBOK SUPERSPAR", "SPRINGBOK TOPS", "VREDENDAL SUPERSPAR", "VREDENDAL TOPS", "PORT NOLLOTH SPAR", "PORT NOLLOTH TOPS", "BERGSIG SAVEMOR"].forEach(store => {
-                let option = document.createElement("option");
-                option.value = store;
-                option.textContent = store;
-                storeDropdown.appendChild(option);
-            });
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/RonetteObie/ops-lens-reports/main/google_drive_links.csv');
+                const text = await response.text();
+                const rows = text.split('\n').slice(1);
+                let stores = new Set();
+                
+                rows.forEach(row => {
+                    const columns = row.split(',').map(col => col.trim()); // Trim spaces
+                    if (columns.length >= 3) {
+                        const store = columns[0];
+                        const reportName = columns[1];
+                        const reportLink = columns[2];
+                        
+                        stores.add(store);
+                        if (!reportLinks[store]) reportLinks[store] = {};
+                        reportLinks[store][reportName] = reportLink; // Store exact matches
+                    }
+                });
+
+                // Populate store dropdown
+                const storeDropdown = document.getElementById("store");
+                ["SPRINGBOK SUPERSPAR", "SPRINGBOK TOPS", "VREDENDAL SUPERSPAR", "VREDENDAL TOPS", "PORT NOLLOTH SPAR", "PORT NOLLOTH TOPS", "BERGSIG SAVEMOR"].forEach(store => {
+                    let option = document.createElement("option");
+                    option.value = store;
+                    option.textContent = store;
+                    storeDropdown.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error loading reports:", error);
+            }
         }
         
         function openReport(reportName) {
@@ -78,7 +82,12 @@
             <button onclick="openReport('Parent & Child')">Parent & Child</button>
             <button onclick="openReport('Seasonal Lines')">Seasonal Lines</button>
             <button onclick="openReport('Supplier Not Used > 3 Months')">Supplier Not Used > 3 Months</button>
-
+            <button onclick="openReport('Corrective Next Steps')">Corrective Next Steps</button>
+            <button onclick="openReport('TOP 400')">TOP 400</button>
+            <button onclick="openReport('Promo Tool')">Promo Tool</button>
+            <button onclick="openReport('Customer Analytics')">Customer Analytics</button>
+            <button onclick="openReport('Basket Analysis')">Basket Analysis</button>
+            <button onclick="openReport('Sales Predictions')">Sales Predictions</button>
         </div>
     </main>
     <footer>
