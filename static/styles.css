@@ -1,0 +1,85 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2C3E50; /* Unified background color */
+    color: #ECF0F1;
+}
+
+header {
+    text-align: center;
+    padding: 0px;
+    background-color: #2C3E50; /* Same as body background */
+}
+
+header h1 {
+    font-size: 4.5rem;
+    margin-bottom: 10px;
+}
+
+.date-container {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.dropdowns {
+    margin-top: 10px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+select {
+    padding: 5px;
+    margin-right: 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+}
+
+main {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.report-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.report-buttons button {
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #B3FEFC; /* Aqua color */
+    color: #000000;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.report-buttons button:hover {
+    background-color: #62e77f; /* Slightly darker aqua */
+    transform: scale(1.05);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #2C3E50; /* Same as body background */
+}
+
+footer img {
+    max-width: 800px; /* Larger logo */
+    transition: transform 0.2s;
+}
+
+footer img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
